@@ -1,0 +1,31 @@
+#' Tidy dataframes from telegram bot
+#'
+#' This function allows you extract a tidy dataframe from somewhat messy telegram data
+#' @param token your access token (genereated by botfather)
+#' @keywords tidy dataframe
+#' @export
+#' @examples
+#' mybot <- tidy_telegram(token = "123456")
+
+
+tidy_telegram <- function(token){
+bot <- telegram::TGBot$new(token = token)
+test <- bot$getUpdates()
+message_ans1 <- test$message
+from <- message_ans1$from
+chat<- message_ans1$chat
+date <- message_ans1$date 
+df <- dplyr::bind_cols(from, chat)
+df$date <- lubridate::as_datetime(date)
+df$text <- message_ans1$text
+return(df)
+}
+
+
+
+
+
+
+ 
+
+
